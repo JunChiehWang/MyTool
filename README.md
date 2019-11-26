@@ -5,11 +5,11 @@
 ex:     
 if modules are in /home/e121341/bin/MyTool/DS_utils             
 if you are going to use modules in plt_utils.py in DS_utils,          
-                         
-/home                                  
-    -e121341                      
-        -bin                                 
-            -MyTool              
+
+/home
+	-e121341
+		-bin
+			-MyTool              
                 -DS_utils                       
                     -__init.py__                   
                     -feature_utils.py                 
