@@ -3,13 +3,13 @@
 1. Add path to jupyter notebook so that these modules can be found     
 
 ex:     
-if modules are in /home/e121341/bin/JunChieh_Wang/DS_utils             
+if modules are in /home/e121341/bin/MyTool/DS_utils             
 if you are going to use modules in plt_utils.py in DS_utils,          
                          
 /home                                  
     -e121341                      
         -bin                                 
-            -JunChieh_Wang               
+            -MyTool              
                 -DS_utils                       
                     -__init.py__                   
                     -feature_utils.py                 
@@ -18,7 +18,7 @@ if you are going to use modules in plt_utils.py in DS_utils,
                   
 (1) append this path in Jupyter notebook:                      
 import sys                   
-sys.path.append('/home/e121341/bin/JunChieh_Wang')           
+sys.path.append('/home/e121341/bin/MyTool')           
                       
 (2) import the tools:                    
 from DS_utils import plt_utils        
