@@ -2,7 +2,18 @@
 import numpy as np
 import seaborn as sns
 import pandas as pd
+import matplotlib
 import matplotlib.pyplot as plt
+
+
+# print version of packages
+print("Import PyPlt:")
+from platform import python_version
+print("python version: ", python_version())
+print("numpy version: ", np.version.version)
+print("pandas version: ", pd.__version__)
+print("matplotlib version: ", matplotlib.__version__)
+print("Seaborn version: ", sns.__version__)
 
 
 class MyPlt:
@@ -33,6 +44,8 @@ class MyPlt:
                  ymin=None, ymax=None, y2min=None, y2max=None,
                  xlabel=None, ylabel=None, y2label=None,
                  title=None, savefig=False):
+
+
 
         # check if 2 y axis
         self.double_y = False
@@ -175,7 +188,7 @@ class MyPlt:
             **fig_kw: keywords that are passed to matplotlib.pyplot.plot
         # Example
             use sharey here I can still set y(or x) range !!!
-            
+
             fig, ax = plt.subplots(2,1,figsize=(19,10),sharey=True)
             xmin=-1
             xmax=12
@@ -262,7 +275,7 @@ class MyPlt:
             ycolor, y2color: color of left and right y axis,
                 defautl = 'blue', 'red'
             marker: marker of line, default = 'o'
-            markersize: marker size, default = 10.
+            markersize: marker size, default = 10. 0 means no markers.
             **fig_kw: keywords that are passed to matplotlib.pyplot.plot
         # Example
             fig, ax = plt.subplots(2,1,figsize=(14,16))
