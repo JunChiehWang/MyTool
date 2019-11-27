@@ -157,6 +157,101 @@ class MyPlt:
             fig.savefig(file_title + ".png", transparent=False,
                         dpi=100, bbox_inches='tight')
 
+    def box_plt(self, hue=None,
+                linewidth=2.5, width=0.8,
+                markersize=5, boxvalue=True,
+                **fig_kw):
+        """Box plot.
+        For boxplot, min and max from self is different from what shows on
+        axis, I decide not to manually set it with set_xlim and set_ylim.
+
+        # Arguments
+            hue: grouping variable that produce points with different style
+            linewidth: width of gray lines that frame the plot elements,
+                default = 2.5
+            width: box width, default = 0.8
+            markersize: marker size of outlier observations, default = 5.
+
+            **fig_kw: keywords that are passed to matplotlib.pyplot.plot
+        # Example
+            use sharey here I can still set y(or x) range !!!
+            
+            fig, ax = plt.subplots(2,1,figsize=(19,10),sharey=True)
+            xmin=-1
+            xmax=12
+            ymin=0
+            ymax=2000
+            Eth_r = PyPlt.MyPlt(df_Eth['r']-1, df_Eth['Eth'],
+                                xmin=xmin, xmax=xmax, ymin=ymin, ymax=ymax)
+            Eth_r.scatter_plt(hue=df_Eth['case'],markersize=10,ax=ax[0])
+            Eth_rint = PyPlt.MyPlt(df_Eth['r_int']-1,
+                                   df_Eth['Eth'].astype('int64'),
+                                   xmin=xmin, xmax=xmax, ymin=ymin, ymax=ymax)
+            Eth_rint.box_plt(ax=ax[1], hue=df_Eth['case'], boxvalue=True,
+                             linewidth=1, width=0.7)
+        # Date
+            20191126
+    """
+        if hue is not None:
+            assert len(hue) == self.data_size
+
+        plot = sns.boxplot(self.x, self.y,
+                           hue=hue, fliersize=markersize,
+                           linewidth=linewidth, width=width,
+                           **fig_kw)
+
+        ## set x, y limit
+        #if minmax == 'self':
+        #    plot.set_xlim=(self.xmin, self.xmax)
+        #    plot.set_ylim=(self.ymin, self.ymax)
+        #elif minmax == 'auto':
+        #    pass
+        #else:
+        #    print('Unknown mimmax, set minmax to auto')
+
+        # set labels
+        plot.set_xlabel(self.xlabel)
+        plot.set_ylabel(self.ylabel)
+
+        # set ticks
+        plot.tick_params(axis='x', **self.tkw)
+        plot.tick_params(axis='y', **self.tkw)
+
+        # set title
+        if self.title is not None:
+            plot.set_title(self.title)
+
+        # value on box
+        if boxvalue:
+            axe = plot.axes
+            lines = axe.get_lines()
+            NumBox = int(np.ceil(len(lines)/6))  # number of box in the figure
+            for ibox in range(NumBox):
+                # x_l, x_r = position (left and right) of box
+                # 25%, 75%, minimum, maximum, median, others
+                (x_l, y_25), (x_r, _) = lines[0 + ibox*6].get_xydata()
+                (x_l, y_75), (x_r, _) = lines[1 + ibox*6].get_xydata()
+                (x_l, y_min), (x_r, _) = lines[2 + ibox*6].get_xydata()
+                (x_l, y_max), (x_r, _) = lines[3 + ibox*6].get_xydata()
+                (x_l, y_med), (x_r, _) = lines[4 + ibox*6].get_xydata()
+                x_center = (x_l + x_r)/2
+                # text on box
+                axe.text(x_center, y_25, f'{y_25}')
+                axe.text(x_center, y_75, f'{y_75}')
+                axe.text(x_center, y_min, f'{y_min}')
+                axe.text(x_center, y_max, f'{y_max}')
+                axe.text(x_center, y_med, f'{y_med}')
+
+        # save figures
+        if self.savefig:
+            fig = plot.get_figure()
+            if self.title is None:
+                file_title = 'scatter_plt'
+            else:
+                file_title = self.title
+            fig.savefig(file_title + ".png", transparent=False,
+                        dpi=100, bbox_inches='tight')
+
     def xyy_plt(self, ycolor='blue', y2color='red',
                 marker='o', markersize=10, **fig_kw):
         """plot data_y1 (on left y axis) and data_y2
