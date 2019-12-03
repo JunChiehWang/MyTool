@@ -5,7 +5,7 @@ import os
 import subprocess
 import datetime
 
-version = '20190613'
+version = '20191203'
 
 
 ##############################################################################
@@ -32,8 +32,8 @@ def getArgs(argv=None):
            default = ./crtrs_Nd.plt.dat.lay
     -map = file of colormap to be loaded
            default =
-           ~/bin/JunChieh_Wang/
-           tecplot/tecplot_modified_color_map_20190502map'
+           ~/bin/MyTool/
+           TECPLOT_utils/tecplot_modified_color_map_20190502map'
 
            with mapname = 'modified_ranbow_1'
            if 'none', then no colormap will be loaded
@@ -97,8 +97,10 @@ def getArgs(argv=None):
         print('\noutput_layout: {}'.format(output_layout))
     else:
         # date and time
-        date = datetime.datetime.now()
-        date = '{}{}{}'.format(date.year, date.month, date.day)
+        # date = datetime.datetime.now()
+        # date = '{}{}{}'.format(date.year, date.month, date.day)
+        date = str(datetime.date.today()).split('-')
+        date = '{}{}{}'.format(date[0], date[1], date[2])
         output_layout = './crtrs_Nd_{}.plt.dat.lay'.format(date)
         print('\noutput_layout is not specified from command-line')
         print('set output_layout to : {}'.format(output_layout))
@@ -111,7 +113,7 @@ def getArgs(argv=None):
             colormap = str(args.colormap)
             print('\ncolormap file from: {}'.format(colormap))
     else:
-        colormap = '~/bin/JunChieh_Wang/tecplot/' \
+        colormap = '~/bin/MyTool/TECPLOT_utils/' \
                    'tecplot_modified_color_map_20190502.map'
         print('\ncolormap file is not specified from command-line')
         print('set colormap to : {}'.format(colormap))

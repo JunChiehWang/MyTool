@@ -6,7 +6,7 @@ import os
 import re
 import datetime
 
-version = '20190613'
+version = '20191203'
 
 
 ##############################################################################
@@ -28,7 +28,7 @@ def getArgs(argv=None):
 
     -tp  = file of template to start with.
            default =
-           '~/bin/JunChieh_Wang/tecplot/
+           '~/bin/MyTool/TECPLOT_utils/
            crtrs_1d_all_in_1_template_20190501.lay'
     -in  = input files
     -out = output layout
@@ -66,7 +66,7 @@ def getArgs(argv=None):
         template = str(args.template)
         print('\ntemplate file from: {}'.format(template))
     else:
-        template = '~/bin/JunChieh_Wang/tecplot/' +                           \
+        template = '~/bin/MyTool/TECPLOT_utils/' +                            \
                 'crtrs_1d_all_in_1_template_20190501.lay'
         print('\ntemplate file is not specified from command-line')
         print('set template to : {}'.format(template))
@@ -85,8 +85,10 @@ def getArgs(argv=None):
         print('\noutput_layout: {}'.format(output_layout))
     else:
         # date and time
-        date = datetime.datetime.now()
-        date = '{}{}{}'.format(date.year, date.month, date.day)
+        # date = datetime.datetime.now()
+        # date = '{}{}{}'.format(date.year, date.month, date.day)
+        date = str(datetime.date.today()).split('-')
+        date = '{}{}{}'.format(date[0], date[1], date[2])
         output_layout = './crtrs_1d_{}.plt.dat.lay'.format(date)
         print('\noutput_layout is not specified from command-line')
         print('set output_layout to : {}'.format(output_layout))
