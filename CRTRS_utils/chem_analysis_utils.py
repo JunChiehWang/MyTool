@@ -49,7 +49,6 @@ class chem_analysis:
         ..
 
     # Argument
-        file_path: file (with full path) to be parsed
         dtype: dtype of numpy array
                'str', 'float32', 'float64',....
 
@@ -68,3 +67,36 @@ class chem_analysis:
                 if line.startswith('Time =')]
         time = np.array(time, dtype=dtype)
         return time
+
+    def get_te (self, dtype='float32'):
+        """get electron temperature (eV) of each output.
+
+        format of electron temperature in chem_analysis.dat :
+        ..
+        ...
+        ****************************************
+
+        Electron Temperature =   6.14 eV
+
+        ****************************************
+        ..
+
+    # Argument
+        dtype: dtype of numpy array
+               'str', 'float32', 'float64',....
+
+    # Exampe
+            chem = chem_analysis_utils.chem_analysis(chem_analysis_path)
+            time = chem.get_te()
+
+    # Return
+        numpy array of electron temperature (eV)
+
+    # Date
+        20191212
+    """
+
+        te = [line.split()[3] for line in self.content_list
+              if line.startswith('Electron Temperature = ')]
+        te = np.array(te, dtype=dtype)
+        return te
