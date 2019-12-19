@@ -25,12 +25,17 @@ class MyPlt:
         data_x: data for x axis
         data_y: data for y on left y axis
         data_y2: data for y2 on right y axis (optional), default = None
-        xlabel, ylabel, y2label = label for data_x, data_y , data_y2,
+        xlabel, ylabel, y2label: label for data_x, data_y , data_y2,
             default = None if numpy array or list, or
                       name of data if input data is a pandas series
-        fonts, fontm, fontl = font size small, medium, large
+        fonts, fontm, fontl: font size small, medium, large
         xmin, xmax, ymin, ymax, y2min, y2max: min and max of x, y, y2 axis,
             default = min and max of input data
+        xpadding, ypadding:
+            effective only when xmin, xmax, ymin, or ymax is none (default),
+            use paddig to add more space above/below the max and min of data
+            add (x.max-x.min)*xpadding to the x.min or x.max
+            add (y.max-y.min)*ypadding to the y.min or y.max
         title: title for figure, default = None
         savefig: save the figure to a png file
             name = title + "png", default = False
@@ -42,6 +47,7 @@ class MyPlt:
     def __init__(self, data_x, data_y, data_y2=None,
                  xmin=None, xmax=None,
                  ymin=None, ymax=None, y2min=None, y2max=None,
+                 xpadding=0.1, ypadding=0.1,
                  xlabel=None, ylabel=None, y2label=None,
                  fonts=14, fontm=16, fontl=18,
                  title=None, savefig=False):
@@ -88,18 +94,24 @@ class MyPlt:
             self.y2 = np.array(self.y2)
 
         # set min and max of axis
+        padding_x = abs(self.x.max() - self.x.min())*xpadding
         if self.xmin is None:
-            self.xmin = self.x.min()
+            self.xmin = self.x.min() - padding_x
         if self.xmax is None:
-            self.xmax = self.x.max()
+            self.xmax = self.x.max() + padding_x
+
+        padding_y = abs(self.y.max() - self.y.min())*ypadding
         if self.ymin is None:
-            self.ymin = self.y.min()
+            self.ymin = self.y.min() - padding_y
         if self.ymax is None:
-            self.ymax = self.y.max()
+            self.ymax = self.y.max() + padding_y
+
         if (self.double_y) and (self.y2min is None):
-            self.y2min = self.y2.min()
+            padding_y = abs(self.y2.max() - self.y2.min())*ypadding
+            self.y2min = self.y2.min() - padding_y
         if (self.double_y) and (self.y2max is None):
-            self.y2max = self.y2.max()
+            padding_y = abs(self.y2.max() - self.y2.min())*ypadding
+            self.y2max = self.y2.max() + padding_y
 
         # size of font
         plt.rc('font', size=self.fonts)          # controls default text sizes
