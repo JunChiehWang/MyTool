@@ -14,6 +14,7 @@ print("pandas version: ", pd.__version__)
 print("matplotlib version: ", matplotlib.__version__)
 print("Seaborn version: ", sns.__version__)
 
+
 class MyPlt:
     """My python plotter library.
     This does the drawing using matplotlib and/or seaborn
@@ -27,6 +28,7 @@ class MyPlt:
         xlabel, ylabel, y2label = label for data_x, data_y , data_y2,
             default = None if numpy array or list, or
                       name of data if input data is a pandas series
+        fonts, fontm, fontl = font size small, medium, large
         xmin, xmax, ymin, ymax, y2min, y2max: min and max of x, y, y2 axis,
             default = min and max of input data
         title: title for figure, default = None
@@ -34,13 +36,14 @@ class MyPlt:
             name = title + "png", default = False
         **fig_kw: keywords that are passed to matplotlib.pyplot.plot
     # Date
-        20191127
+        20191218
     """
 
     def __init__(self, data_x, data_y, data_y2=None,
                  xmin=None, xmax=None,
                  ymin=None, ymax=None, y2min=None, y2max=None,
                  xlabel=None, ylabel=None, y2label=None,
+                 fonts=14, fontm=16, fontl=18,
                  title=None, savefig=False):
 
         # check if 2 y axis
@@ -66,6 +69,9 @@ class MyPlt:
         self.ylabel = ylabel
         self.title = title
         self.savefig = savefig
+        self.fonts = fonts
+        self.fontm = fontm
+        self.fontl = fontl
 
         if self.double_y:
             self.y2 = data_y2
@@ -94,6 +100,15 @@ class MyPlt:
             self.y2min = self.y2.min()
         if (self.double_y) and (self.y2max is None):
             self.y2max = self.y2.max()
+
+        # size of font
+        plt.rc('font', size=self.fonts)          # controls default text sizes
+        plt.rc('axes', titlesize=self.fonts)     # fontsize of the axes title
+        plt.rc('axes', labelsize=self.fontm)     # fontsize of the x, y labels
+        plt.rc('xtick', labelsize=self.fonts)    # fontsize of the tick labels
+        plt.rc('ytick', labelsize=self.fonts)    # fontsize of the tick labels
+        plt.rc('legend', fontsize=self.fonts)    # legend fontsize
+        plt.rc('figure', titlesize=self.fontl)   # fontsize of the figure title
 
         # set label
         if (isinstance(self.x, pd.Series)) and (self.xlabel is None):
