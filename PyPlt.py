@@ -348,6 +348,8 @@ class MyPlt:
         # Arguments
             ycolor, y2color: color of left and right y axis,
                 defautl = 'blue', 'red'
+                use None to allow multiple lines with different colors in
+                a single figure.
             marker: marker of line, default = 'o'
             markersize: marker size, default = 10. 0 means no markers.
             legend : “brief”, “full”, or False, default = 'brief'
@@ -452,10 +454,10 @@ class MyPlt:
         if self.title is not None:
             ploty.set_title(self.title)
 
-        # set legend not working for this one yet
-        # ploty2.legend(bbox_to_anchor=self.legend_pos,
-        #             loc=self.legend_loc,
-        #             borderaxespad=0.)
+        # set legend
+        ploty.legend(bbox_to_anchor=self.legend_pos,
+                     loc=self.legend_loc,
+                     borderaxespad=self.legend_pad)
 
         # save figures
         if self.savefig:
