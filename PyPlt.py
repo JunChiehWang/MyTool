@@ -36,6 +36,19 @@ class MyPlt:
             use paddig to add more space above/below the max and min of data
             add (x.max-x.min)*xpadding to the x.min or x.max
             add (y.max-y.min)*ypadding to the y.min or y.max
+        legend_pos, legend_loc, legend_pad:
+            legend position, location and pad
+            for example, legend_pos=(1.04,1) and legend_loc="upper left"
+            means to place the legend outside the axes, such that the
+            "upper left" corner of the legend is at position (1.04,1)
+            in axes coordinates.
+            legend_loc can be:
+                'best','right','center'
+                'upper left', 'upper right'
+                'lower left', 'lower right',
+                'center left', 'center right',
+                'lower center', 'upper center',
+            legend_pad is the pad between the axes and legend border.
         title: title for figure, default = None
         savefig: save the figure to a png file
             name = title + "png", default = False
@@ -50,6 +63,8 @@ class MyPlt:
                  xpadding=0.1, ypadding=0.1,
                  xlabel=None, ylabel=None, y2label=None,
                  fonts=14, fontm=16, fontl=18,
+                 legend_pos=(1, 1), legend_loc='upper right',
+                 legend_pad=0.5,
                  title=None, savefig=False):
 
         # check if 2 y axis
@@ -78,6 +93,9 @@ class MyPlt:
         self.fonts = fonts
         self.fontm = fontm
         self.fontl = fontl
+        self.legend_pos = legend_pos
+        self.legend_loc = legend_loc
+        self.legend_pad = legend_pad
 
         if self.double_y:
             self.y2 = data_y2
@@ -213,6 +231,11 @@ class MyPlt:
         if self.title is not None:
             plot.set_title(self.title)
 
+        # set legend
+        plot.legend(bbox_to_anchor=self.legend_pos,
+                    loc=self.legend_loc,
+                    borderaxespad=self.legend_pad)
+
         # save figures
         if self.savefig:
             fig = plot.get_figure()
@@ -266,15 +289,6 @@ class MyPlt:
                            linewidth=linewidth, width=width,
                            **fig_kw)
 
-        # set x, y limit
-        #if minmax == 'self':
-        #    plot.set_xlim=(self.xmin, self.xmax)
-        #    plot.set_ylim=(self.ymin, self.ymax)
-        #elif minmax == 'auto':
-        #    pass
-        #else:
-        #    print('Unknown mimmax, set minmax to auto')
-
         # set labels, shown on axis
         plot.set_xlabel(self.xlabel)
         plot.set_ylabel(self.ylabel)
@@ -307,6 +321,11 @@ class MyPlt:
                 axe.text(x_center, y_min, f'{y_min}')
                 axe.text(x_center, y_max, f'{y_max}')
                 axe.text(x_center, y_med, f'{y_med}')
+
+        # set legend
+        plot.legend(bbox_to_anchor=self.legend_pos,
+                    loc=self.legend_loc,
+                    borderaxespad=self.legend_pad)
 
         # save figures
         if self.savefig:
@@ -433,6 +452,11 @@ class MyPlt:
         if self.title is not None:
             ploty.set_title(self.title)
 
+        # set legend not working for this one yet
+        # ploty2.legend(bbox_to_anchor=self.legend_pos,
+        #             loc=self.legend_loc,
+        #             borderaxespad=0.)
+
         # save figures
         if self.savefig:
             fig = ploty.get_figure()
@@ -444,7 +468,8 @@ class MyPlt:
                         dpi=100, bbox_inches='tight')
 
     def bar_plt(self, hue=None, orient='v',
-                order=None, hue_order=None,
+                order=None, hue_order=None, ci=None, edgecolor='k',
+                linewidth=1,
                 set_ylabel='self', **fig_kw):
         """Show point estimates and confidence intervals as rectangular bars.
 
@@ -473,18 +498,43 @@ class MyPlt:
             order, hue_order : lists of strings, optional
                 Order to plot the categorical levels in, otherwise the levels
                 are inferred from the data objects.
+                x, y limit is not working here, but we can use order to add
+                space to the plot (for legend).
+            ci: float, 'sd', or None(default),
+                size of confidence intervals to draw around estimated values.
+                If “sd”, skip bootstrapping and draw the standard deviation of
+                the observations.
+                If None, no bootstrapping will be performed, and error bars
+                will not be drawn.
+            edgecolor: color of bar, default = 'k' (black).
+            linewidth: width of edge of bar, default = 1.
             **fig_kw: keywords that are passed to matplotlib.pyplot.plot
-        # Example
 
+        # Example
+            fig, ax = plt.subplots(1,1,figsize=(4,4),sharey=True)
+            var_pre = PyPlt.MyPlt(df_1d['mt'],df_1d[var])
+            var_pre.bar_plt(hue=df_1d['wb?'],order=[10.0,20.0,40.0,'',''],
+                            hue_order=[14.0,2.0])
+            ('' in order to add space for legend)
         # Date
-            20191218
+            20191219
         """
-        if hue is not None:
-            assert len(hue) == self.data_size
 
         plot = sns.barplot(self.x, self.y, hue=hue, orient=orient,
-                           order=order, hue_order=hue_order,
+                           order=order, hue_order=hue_order, ci=ci,
+                           linewidth=linewidth, edgecolor=edgecolor,
                            **fig_kw)
+
+        # only show legend if hue is used.
+        if hue is not None:
+            # set tile in legend
+            if (isinstance(hue, pd.Series)):
+                legend_title = hue.name
+            # set legend
+            plot.legend(bbox_to_anchor=self.legend_pos,
+                        loc=self.legend_loc,
+                        borderaxespad=self.legend_pad,
+                        title=legend_title)
 
         # set labels, shown on axis
         plot.set_xlabel(self.xlabel)
@@ -509,4 +559,3 @@ class MyPlt:
                 file_title = self.title
             fig.savefig(file_title + ".png", transparent=False,
                         dpi=100, bbox_inches='tight')
-
