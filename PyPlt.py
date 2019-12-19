@@ -312,7 +312,7 @@ class MyPlt:
         if self.savefig:
             fig = plot.get_figure()
             if self.title is None:
-                file_title = 'scatter_plt'
+                file_title = 'box_plt'
             else:
                 file_title = self.title
             fig.savefig(file_title + ".png", transparent=False,
@@ -442,3 +442,71 @@ class MyPlt:
                 file_title = self.title
             fig.savefig(file_title + ".png", transparent=False,
                         dpi=100, bbox_inches='tight')
+
+    def bar_plt(self, hue=None, orient='v',
+                order=None, hue_order=None,
+                set_ylabel='self', **fig_kw):
+        """Show point estimates and confidence intervals as rectangular bars.
+
+        A bar plot represents an estimate of central tendency for a numeric
+        variable with the height of each rectangle and provides some indication
+        of the uncertainty around that estimate using error bars. Bar plots
+        include 0 in the quantitative axis range, and they are a good choice
+        when 0 is a meaningful value for the quantitative variable, and you
+        want to make comparisons against it.
+
+        It is also important to keep in mind that a bar plot shows only the
+        mean (or other estimator) value, but in many cases it may be more
+        informative to show the distribution of values at each level of the
+        categorical variables. In that case, other approaches such as a box or
+        violin plot may be more appropriate.
+
+        # Arguments
+            x, y, hue : Inputs for plotting long-form data.
+            orient: orientation of the plot (vertical 'v' or horizontal 'h'),
+                sometimes we need to change orient and switch x, y to make it
+                work.
+            set_ylabel: used for set_ylabel to set label for y axis
+                None: don't set_ylabel
+                'self': use set_ylabel(self.ylabel), default
+                other string: use set_ylabel(set_ylabel)
+            order, hue_order : lists of strings, optional
+                Order to plot the categorical levels in, otherwise the levels
+                are inferred from the data objects.
+            **fig_kw: keywords that are passed to matplotlib.pyplot.plot
+        # Example
+
+        # Date
+            20191218
+        """
+        if hue is not None:
+            assert len(hue) == self.data_size
+
+        plot = sns.barplot(self.x, self.y, hue=hue, orient=orient,
+                           order=order, hue_order=hue_order,
+                           **fig_kw)
+
+        # set labels, shown on axis
+        plot.set_xlabel(self.xlabel)
+
+        if set_ylabel is None:
+            plot.set_ylabel('')
+        elif set_ylabel == 'self':
+            plot.set_ylabel(self.ylabel)
+        else:
+            plot.set_ylabel(set_ylabel)
+
+        # set title
+        if self.title is not None:
+            plot.set_title(self.title)
+
+        # save figures
+        if self.savefig:
+            fig = plot.get_figure()
+            if self.title is None:
+                file_title = 'bar_plt'
+            else:
+                file_title = self.title
+            fig.savefig(file_title + ".png", transparent=False,
+                        dpi=100, bbox_inches='tight')
+
