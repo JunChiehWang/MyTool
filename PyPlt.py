@@ -54,7 +54,7 @@ class MyPlt:
             name = title + "png", default = False
         **fig_kw: keywords that are passed to matplotlib.pyplot.plot
     # Date
-        20191218
+        20190206
     """
 
     def __init__(self, data_x, data_y, data_y2=None,
@@ -193,7 +193,7 @@ class MyPlt:
         plot_ylabel = self.ylabel
 
         if hue is not None:
-            assert len(hue) == self.data_size
+            #assert len(hue) == self.data_size
             plot_ylabel = None
         if size is not None:
             assert len(size) == self.data_size
@@ -281,8 +281,8 @@ class MyPlt:
         # Date
             20191127
     """
-        if hue is not None:
-            assert len(hue) == self.data_size
+        # if hue is not None:
+        #    assert len(hue) == self.data_size
 
         plot = sns.boxplot(self.x, self.y,
                            hue=hue, fliersize=markersize,
