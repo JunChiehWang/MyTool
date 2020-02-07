@@ -1,9 +1,14 @@
 """This script generate variables to be plotted in crtrs.nam."""
 import argparse
 import os
-from CRTRS_utils import dat_utils
+# used before python 3.6:
+# from CRTRS_utils import dat_utils
+# used after python 3.6:
+# https://stackoverflow.com/q/42263962/10764631
+__path__=[os.path.dirname(os.path.abspath(__file__))]
+import dat_utils
 
-version = '20191022'
+version = '20200206'
 
 
 ##############################################################################
