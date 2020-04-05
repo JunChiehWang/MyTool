@@ -38,8 +38,12 @@ friend Array3D operator/(const Array3D &lhs, double val);
 // overloading 2 arg operator- by scaler as global function
 friend Array3D operator-(const Array3D &lhs, double val);
 
+// overloading string insertation operator as global function
+friend std::ostream &operator<<(std::ostream &os, const Array3D &obj); 
+
 private:
     static size_t NumVectors; // cannot assign value here 
+    static bool IsVerbose;
     size_t ni {1}; // number of nodes in x direction 
     size_t nj {1}; //                    y
     size_t nk {1}; //                    z 
@@ -66,7 +70,7 @@ public:
     
     // overloading move assignment operator
     Array3D &operator=(Array3D &&rhs);   
-    
+
     //overloading operator+= by scaler
     Array3D &operator+=(double val); 
     
@@ -78,27 +82,19 @@ public:
     
     //overloading operator/= by scaler
     Array3D &operator/=(double val); 
-    
-// not tested yet !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-
-    
-    // destructor
-    ~Array3D(); 
-    
-    // static function
-    static size_t GetNumVectors();
-
-    
-    // ?????????????????????????????? how ???
-    /* overload the array access operator 
-       so you can do: r[1][2][0] = 7, instead of: r.data[1][2][0] = 7 */
+    // overload array access operator 
+    // so you can vec[1][2][0] = 7, instead of vec.data[1][2][0] = 7 */
     double **operator[](size_t i) {return data[i];}
-
-    // getter ni, nj, nk
+    
+    // getters
     size_t get_ni() const {return ni;}
     size_t get_nj() const {return nj;}
     size_t get_nk() const {return nk;}
+    static size_t GetNumVectors();
+    
+    // destructor
+    ~Array3D(); 
     
 
 };
