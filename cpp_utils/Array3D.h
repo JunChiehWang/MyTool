@@ -171,6 +171,10 @@ T ***DeallocateMemory(T ***array, size_t ni, size_t nj, size_t nk) {
         delete array[i];
     }        
     delete [] array;
+    // ref: 
+    // set it to nullptr after you delete them, a null pointed exception is 
+    // sometimes easier to spot, and it's also safe to call delete on 
+    // nullptr. 
     array = nullptr;
     return array;
 }
