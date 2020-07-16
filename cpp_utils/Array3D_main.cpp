@@ -15,7 +15,7 @@ int main() {
     std::cout << "===================="<< std::endl;
 
     std::cout << ' ' << std::endl;
-    std::cout << "Default Constructor: \"constr\"" << std::endl;
+    std::cout << "Default Constructor: \"constr_de\"" << std::endl;
     // Array3D<double> constr_de(); It's wrong way to call default constructor! 
     // The compiler thinks it is a declaration of a function that takes no 
     // arguments and returns a MyObject instance.

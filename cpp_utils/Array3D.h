@@ -527,7 +527,7 @@ Array3D<T> operator-(const Array3D<T> &lhs, double val) {
 // overloading string insertation operator as global function ==================
 template<typename T>
 std::ostream &operator<<(std::ostream &os, const Array3D<T> &obj) {
-    os << "Array3D object into: (ni=" << obj.ni 
+    os << "Array3D object info: (ni=" << obj.ni 
        << ", nj=" << obj.nj 
        << ", nk=" << obj.nk << ")" << std::endl;
     os << "print3Darray:" << std::endl;   
