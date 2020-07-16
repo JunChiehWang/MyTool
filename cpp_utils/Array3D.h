@@ -15,7 +15,7 @@ class Array3D {
 
 // friend function in template class need special treatment !
 
-template<typename U> friend void print3Darray(const Array3D<U> &array3d);
+template<typename U> friend bool print3Darray(const Array3D<U> &array3d);
 
 // overloading 1 arg operator- as global function, ex: B = -A 
 template<typename U> friend Array3D<U> operator-(const Array3D<U> &rhs);    
@@ -128,16 +128,24 @@ collect2: error: ld returned 1 exit status
 but if it is a template class, inline is not needed !
 */
 template<typename T>
-void print3Darray(const Array3D<T> &array) {
-    for (size_t i{0}; i<array.ni; i++) {
-        std::cout << "i = " << i << ": " << std::endl;
-        for (size_t j{0}; j<array.nj; j++) {
-            std::cout << "[ ";
-            for (size_t k{0}; k<array.nk; k++) {
-                std::cout << array.data[i][j][k] << ' ';
+bool print3Darray(const Array3D<T> &array) {
+    // std::cout << array.data << std::endl;
+    if (array.data==nullptr) {
+        std::cout << "Warning ! This Array3D object contains a nullptr!" 
+                  << std::endl;
+        return false;
+    } else {
+        for (size_t i{0}; i<array.ni; i++) {
+            std::cout << "i = " << i << ": " << std::endl;
+            for (size_t j{0}; j<array.nj; j++) {
+                std::cout << "[ ";
+                for (size_t k{0}; k<array.nk; k++) {
+                    std::cout << array.data[i][j][k] << ' ';
+                }
+                std::cout << ']' << std::endl;
             }
-            std::cout << ']' << std::endl;
         }
+        return true;
     }
 }
 
