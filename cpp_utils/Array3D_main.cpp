@@ -13,12 +13,20 @@ int main() {
     std::cout << "===================="<< std::endl;
     std::cout << "Constructors"        << std::endl;
     std::cout << "===================="<< std::endl;
+
+    std::cout << ' ' << std::endl;
+    std::cout << "Default Constructor: \"constr\"" << std::endl;
+    // Array3D<double> constr_de(); It's wrong way to call default constructor! 
+    // The compiler thinks it is a declaration of a function that takes no 
+    // arguments and returns a MyObject instance.
+    // Array3D<double> constr_de{}; // It's right way to call
+    Array3D<double> constr_de; // It's right way to call
+    std::cout << constr_de << std::endl;
     
     std::cout << ' ' << std::endl;
     std::cout << "Constructor: \"constr(2,2,3)\"" << std::endl;
     Array3D<int> constr(2,2,3);
     std::cout << constr << std::endl;
-    
     std::cout << ' ' << std::endl;
     std::cout << "Constructor: \"constr2(2,2,3,0.5)\"" << std::endl;
     //Array3D constr2(2,2,3,0.5); // works for c++17
